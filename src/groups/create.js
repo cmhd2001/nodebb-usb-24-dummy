@@ -10,7 +10,8 @@ module.exports = function (Groups) {
 		const isSystem = isSystemGroup(data);
 		const timestamp = data.timestamp || Date.now();
 		let disableJoinRequests = parseInt(data.disableJoinRequests, 10) === 1 ? 1 : 0;
-		if (data.name === 'administrators') {
+		// Inclusion de creacion para profesores.
+		if (data.name === 'administrators' || data.name === 'teachers') {
 			disableJoinRequests = 1;
 		}
 		const disableLeave = parseInt(data.disableLeave, 10) === 1 ? 1 : 0;
