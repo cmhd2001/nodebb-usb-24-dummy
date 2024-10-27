@@ -15,6 +15,11 @@ privsUsers.isAdministrator = async function (uid) {
 	return await isGroupMember(uid, 'administrators');
 };
 
+// Inclusion de validacion de privilegios de profesor.
+privsUsers.isTeacher = async function (uid) {
+	return await isGroupMember(uid, 'teachers');
+};
+
 privsUsers.isGlobalModerator = async function (uid) {
 	return await isGroupMember(uid, 'Global Moderators');
 };
