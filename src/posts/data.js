@@ -11,21 +11,14 @@ const intFields = [
 ];
 function modifyPost(post, fields) {
 	if (post) {
-		// La siguiente línea llama a una función en un módulo que aún no ha sido actualizado a TS
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 		(0, database_1.parseIntFields)(post, intFields, fields);
 		if (post.hasOwnProperty('upvotes') && post.hasOwnProperty('downvotes')) {
 			post.votes = post.upvotes - post.downvotes;
 		}
 		if (post.hasOwnProperty('timestamp')) {
-			// La siguiente línea llama a una función en un módulo que aún no ha sido actualizado a TS
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
 			post.timestampISO = (0, utils_1.toISOString)(post.timestamp);
 		}
 		if (post.hasOwnProperty('edited')) {
-			// La siguiente línea llama a una función en un módulo que aún no ha sido actualizado a TS
-			// eslint-disable-next-line max-len
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
 			post.editedISO = post.edited !== 0 ? (0, utils_1.toISOString)(post.edited) : '';
 		}
 	}
@@ -36,12 +29,7 @@ function toExport(Posts) {
 			return [];
 		}
 		const keys = pids.map(pid => `post:${pid}`);
-		// La siguiente línea llama a una función en un módulo que aún no ha sido actualizado a TS
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
 		const postData = await (0, database_1.getObjects)(keys, fields);
-		// La siguiente línea llama a una función en un módulo que aún no ha sido actualizado a TS
-		// eslint-disable-next-line max-len
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
 		const result = await plugins_1.hooks.fire('filter:post.getFields', {
 			pids: pids,
 			posts: postData,
@@ -75,11 +63,7 @@ function toExport(Posts) {
 		await Posts.setPostFields(pid, { [field]: value });
 	};
 	Posts.setPostFields = async function (pid, data) {
-		// La siguiente línea llama a una función en un módulo que aún no ha sido actualizado a TS
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 		await (0, database_1.setObject)(`post:${pid}`, data);
-		// La siguiente línea llama a una función en un módulo que aún no ha sido actualizado a TS
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 		await plugins_1.hooks.fire('action:post.setFields', { data: { ...data, pid } });
 	};
 }

@@ -34,16 +34,10 @@ const __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, 
 };
 
 /* Seccion: IMPORTACIONES */
-/* eslint-disable @typescript-eslint/no-var-requires */
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const meta = require('../meta');
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const user = require('../user');
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const plugins = require('../plugins');
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const privileges = require('../privileges');
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const sockets = require('../socket.io');
 
 /* Seccion: FUNCIONES */
@@ -55,8 +49,6 @@ module.exports = function (Messaging) {
 
 		if (raw === content) return;
 
-		// eslint-disable-next-line max-len
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
 		const payload = yield plugins.hooks.fire('filter:messaging.edit', { content: content, edited: Date.now() });
 		if (!String(payload.content).trim()) throw new Error('[[error:invalid-chat-message]]');
 
@@ -65,14 +57,10 @@ module.exports = function (Messaging) {
 		// Propagate this change to users in the room
 		const messages = yield Messaging.getMessagesData([mid], uid, roomId, true);
 		if (messages[0]) {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 			const roomName = messages[0].deleted ? `uid_${uid}` : `chat_room_${roomId}`;
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 			sockets.in(roomName).emit('event:chats.edit', { messages: messages });
 		}
 
-		// eslint-disable-next-line max-len
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
 		yield plugins.hooks.fire('action:messaging.edit', { message: { ...messages[0], content: payload.content } });
 	});
 
@@ -87,39 +75,27 @@ module.exports = function (Messaging) {
 		const exists = yield Messaging.messageExists(messageId);
 		if (!exists) throw new Error('[[error:invalid-mid]]');
 
-		// eslint-disable-next-line max-len
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
 		const isAdminOrGlobalMod = yield user.isAdminOrGlobalMod(uid);
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 		if (meta.config.disableChat) {
 			throw new Error('[[error:chat-disabled]]');
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 		} else if (!isAdminOrGlobalMod && meta.config.disableChatMessageEditing) {
 			throw new Error('[[error:chat-message-editing-disabled]]');
 		}
 
-		// eslint-disable-next-line max-len
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
 		const userData = yield user.getUserFields(uid, ['banned']);
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 		if (userData.banned) throw new Error('[[error:user-banned]]');
 
-		// eslint-disable-next-line max-len
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
 		const canChat = yield privileges.global.can(['chat', 'chat:privileged'], uid);
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 		if (!canChat.includes(true)) throw new Error('[[error:no-privileges]]');
 
 		const messageData = yield Messaging.getMessageFields(messageId, ['fromuid', 'timestamp', 'system']);
 		if (isAdminOrGlobalMod && !messageData.system) return;
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
 		const chatConfigDuration = meta.config[durationConfig];
 		if (chatConfigDuration && Date.now() - messageData.timestamp > chatConfigDuration * 1000) {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 			throw new Error(`[[error:chat-${type}-duration-expired, ${chatConfigDuration}]]`);
 		}
 
@@ -131,9 +107,7 @@ module.exports = function (Messaging) {
 	Messaging.canEdit = (messageId, uid) => __awaiter(this, undefined, undefined, function* () { return yield canEditDelete(messageId, uid, 'edit'); });
 	Messaging.canDelete = (messageId, uid) => __awaiter(this, undefined, undefined, function* () { return yield canEditDelete(messageId, uid, 'delete'); });
 	Messaging.canPin = (roomId, uid) => __awaiter(this, undefined, undefined, function* () {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		const [isAdmin, isGlobalMod, inRoom, isRoomOwner] = yield Promise.all([
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 			user.isAdministrator(uid), user.isGlobalModerator(uid),
 			Messaging.isUserInRoom(uid, roomId), Messaging.isRoomOwner(uid, roomId),
 		]);
