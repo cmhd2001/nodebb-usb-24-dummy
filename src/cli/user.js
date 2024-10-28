@@ -301,7 +301,7 @@ ${pwGenerated ? ` Generated password: ${password}` : ''}`);
 	async function makeRegular(uids) {
 		uids = argParsers.intArrayParse(uids, 'uids');
 
-		await Promise.all(uids.map(uid => groups.leave(['administrators', 'Global Moderators', "Teachers"], uid)));
+		await Promise.all(uids.map(uid => groups.leave(['administrators', 'Global Moderators', 'Teachers'], uid)));
 
 		const categoryPrivList = await privileges.categories.getPrivilegeList();
 		const cids = await db.getSortedSetRevRange('categories:cid', 0, -1);
