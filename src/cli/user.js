@@ -49,6 +49,10 @@ module.exports = () => {
 		.description('Make user(s) an admin')
 		.arguments('<uids...>')
 		.action((...args) => execute(userCommands.makeAdmin, args));
+	make.command('teacher')
+		.description('Make user(s) a Teachers')
+		.arguments('<uids...>')
+		.action((...args) => execute(userCommands.makeTeacher, args));
 	make.command('global-mod')
 		.description('Make user(s) a global moderator')
 		.arguments('<uids...>')
@@ -268,6 +272,13 @@ ${pwGenerated ? ` Generated password: ${password}` : ''}`);
 		await Promise.all(uids.map(uid => groups.join('administrators', uid)));
 
 		winston.info('[userCmd/make/admin] User(s) added as administrators.');
+	}
+
+	async function makeTeacher(uids) {
+		uids = argParsers.intArrayParse(uids, 'uids');
+		await Promise.all(uids.map(uid => groups.join('Teachers', uid)));
+
+		winston.info('[userCmd/make/globalMod] User(s) added as global moderators.');
 	}
 
 	async function makeGlobalMod(uids) {
