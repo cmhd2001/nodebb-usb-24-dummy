@@ -17,7 +17,7 @@ privsUsers.isAdministrator = async function (uid) {
 
 // Inclusion de validacion de privilegios de profesor.
 privsUsers.isTeacher = async function (uid) {
-	return await isGroupMember(uid, 'teachers');
+	return await isGroupMember(uid, 'Teachers');
 };
 
 privsUsers.isGlobalModerator = async function (uid) {
@@ -83,15 +83,17 @@ privsUsers.canEdit = async function (callerUid, uid) {
 		return true;
 	}
 
-	const [isAdmin, isGlobalMod, isTargetAdmin, isUserAllowedTo] = await Promise.all([
+	const [isAdmin, isGlobalMod, isTargetAdmin, isUserAllowedTo, isTeacher] = await Promise.all([
 		privsUsers.isAdministrator(callerUid),
 		privsUsers.isGlobalModerator(callerUid),
 		privsUsers.isAdministrator(uid),
 		helpers.isAllowedTo('admin:users', callerUid, [0]),
+		privsUsers.isTeacher(uid),
 	]);
 	const canManageUsers = isUserAllowedTo[0];
 	const data = await plugins.hooks.fire('filter:user.canEdit', {
 		isAdmin: isAdmin,
+		isTeacher: isTeacher,
 		isGlobalMod: isGlobalMod,
 		isTargetAdmin: isTargetAdmin,
 		canManageUsers: canManageUsers,

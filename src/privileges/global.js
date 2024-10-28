@@ -114,7 +114,7 @@ privsGlobal.can = async function (privilege, uid) {
 		helpers.isAllowedTo(isArray ? privilege : [privilege], uid, 0),
 	]);
 	return isArray ?
-		isUserAllowedTo.map(allowed => isAdministrator || allowed) :
+		isUserAllowedTo.map(allowed => isAdministrator || isTeacher || allowed) :
 		isAdministrator || isTeacher || isUserAllowedTo[0];
 };
 
