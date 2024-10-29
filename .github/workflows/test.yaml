@@ -48,8 +48,8 @@ jobs:
         with:
           useLockFile: false
 
-      -name: nodebb-theme-harmony
-       run: npm install ./nodebb-plugin-theme-harmony
+      - name: nodebb-theme-harmony
+        run: npm install ./nodebb-plugin-theme-harmony
 
       - name: Setup for Redis
         env:
