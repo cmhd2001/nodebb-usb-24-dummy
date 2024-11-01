@@ -13,7 +13,8 @@ define('forum/groups/list', [
 			// Modificamos el prompt de Bootbox para incluir los nuevos campos
 			const currentYear = new Date().getFullYear();
             const yearOptions = Array.from({length: 10}, (_, i) => `<option value="${currentYear + i}">${currentYear + i}</option>`).join('');
-			
+			const seccOptions = Array.from({length: 10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join('');
+
 			bootbox.dialog({
 				title: '[[groups:new-group.group-name]]',
                 message: '<p>[[groups:new-group.course-code]]:</p>'+
@@ -23,14 +24,18 @@ define('forum/groups/list', [
 						 '<p>[[groups:new-group.course-trim]]:</p>'+
 						 '<select id="newGroupTrim" class="form-control">' +
 						 	'<option value=""> —— </option>' +
-							'<option value="Ene-Mar">Ene-Mar</option>' +
-							'<option value="Abr-Jul">Abr-Jul</option>' +
-							'<option value="Sep-Dic">Sep-Dic</option>' +
-							'<option value="Verano">Verano</option>' +
+							'<option value="[[groups:new-group.course-trim.jm]]">[[groups:new-group.course-trim.jm]]</option>' +
+							'<option value="[[groups:new-group.course-trim.aj]]">[[groups:new-group.course-trim.aj]]</option>' +
+							'<option value="[[groups:new-group.course-trim.sd]]">[[groups:new-group.course-trim.sd]]</option>' +
+							'<option value="[[groups:new-group.course-trim.smmr]]">[[groups:new-group.course-trim.smmr]]</option>' +
 						 '</select></br>' +
 						 '<p>[[groups:new-group.course-year]]:</p>'+
 						 '<select class="form-control" id="newGroupYear">'+
                          	`${yearOptions}` +
+                         '</select></br>' +
+						 '<p>[[groups:new-group.course-secc]]:</p>'+
+						 '<select class="form-control" id="newGroupSecc">'+
+                         	`${seccOptions}` +
                          '</select>',
                 buttons: {
                     cancel: {
@@ -45,9 +50,10 @@ define('forum/groups/list', [
                             var name = $('#newGroupName').val();
 							var trimestre = $('#newGroupTrim').val();
 							var year = $('#newGroupYear').val();
+							var seccion = $('#newGroupSecc').val();
                             if (name && name.length && code && code.length && trimestre && trimestre.length) {
                                 api.post('/groups', {
-                                    name: code + " | " + name + " | " + trimestre + " " + year + " | " + "Prof. " + app.user.username,
+                                    name: code + " | " + name + " | " + trimestre + " " + year + " | " + "Prof. " + app.user.username + " | " + "Sec. " + seccion,
                                 }).then((res) => {
                                     ajaxify.go('groups/' + res.slug);
                                 }).catch(alerts.error);
