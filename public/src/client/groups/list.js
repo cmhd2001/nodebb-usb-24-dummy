@@ -45,9 +45,9 @@ define('forum/groups/list', [
                             var name = $('#newGroupName').val();
 							var trimestre = $('#newGroupTrim').val();
 							var year = $('#newGroupYear').val();
-                            if (name && name.length) {
+                            if (name && name.length && code && code.length && trimestre && trimestre.length) {
                                 api.post('/groups', {
-                                    name: code + " | " + name + " | " + trimestre + " | " + year + " | " + "Prof. " + app.user.username,
+                                    name: code + " | " + name + " | " + trimestre + " " + year + " | " + "Prof. " + app.user.username,
                                 }).then((res) => {
                                     ajaxify.go('groups/' + res.slug);
                                 }).catch(alerts.error);
