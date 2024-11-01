@@ -10,14 +10,57 @@ define('forum/groups/list', [
 
 		// Group creation
 		$('button[data-action="new"]').on('click', function () {
-			bootbox.prompt('[[groups:new-group.group-name]]', function (name) {
-				if (name && name.length) {
-					api.post('/groups', {
-						name: name,
-					}).then((res) => {
-						ajaxify.go('groups/' + res.slug);
-					}).catch(alerts.error);
-				}
+			// Modificamos el prompt de Bootbox para incluir los nuevos campos
+			const currentYear = new Date().getFullYear();
+			const yearOptions = Array.from({ length: 10 }, (_, i) => `<option value="${currentYear + i}">${currentYear + i}</option>`).join('');
+			const seccOptions = Array.from({ length: 10 }, (_, i) => `<option value="${i + 1}">${i + 1}</option>`).join('');
+
+			bootbox.dialog({
+				title: '[[groups:new-group.group-name]]',
+				message: '<p>[[groups:new-group.course-code]]:</p>' +
+						'<p><input id="newGroupCode" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text" placeholder=[[groups:new-group.course-code]]></p>' +
+                        '<p>[[groups:new-group.course-name]]:</p>' +
+						'<p><input id="newGroupName" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text" placeholder=[[groups:new-group.course-name]]></p>' +
+						'<p>[[groups:new-group.course-trim]]:</p>' +
+						'<select id="newGroupTrim" class="form-control">' +
+						'<option value=""> —— </option>' +
+						'<option value="[[groups:new-group.course-trim.jm]]">[[groups:new-group.course-trim.jm]]</option>' +
+						'<option value="[[groups:new-group.course-trim.aj]]">[[groups:new-group.course-trim.aj]]</option>' +
+						'<option value="[[groups:new-group.course-trim.sd]]">[[groups:new-group.course-trim.sd]]</option>' +
+						'<option value="[[groups:new-group.course-trim.smmr]]">[[groups:new-group.course-trim.smmr]]</option>' +
+						'</select></br>' +
+						'<p>[[groups:new-group.course-year]]:</p>' +
+						'<select class="form-control" id="newGroupYear">' +
+                        `${yearOptions}` +
+                        '</select></br>' +
+						'<p>[[groups:new-group.course-secc]]:</p>' +
+						'<select class="form-control" id="newGroupSecc">' +
+                        `${seccOptions}` +
+                        '</select>',
+				buttons: {
+					cancel: {
+						label: 'Cancel',
+						className: 'btn-default',
+					},
+					ok: {
+						label: 'OK',
+						className: 'btn-primary',
+						callback: function () {
+							var code = $('#newGroupCode').val();
+							var name = $('#newGroupName').val();
+							var trimestre = $('#newGroupTrim').val();
+							var year = $('#newGroupYear').val();
+							var seccion = $('#newGroupSecc').val();
+							if (name && name.length && code && code.length && trimestre && trimestre.length) {
+								api.post('/groups', {
+									name: `${code} | ${name} | ${trimestre} ${year} | Prof. ${app.user.username} | Sec. ${seccion}`,
+								}).then((res) => {
+									ajaxify.go('groups/' + res.slug);
+								}).catch(alerts.error);
+							}
+						},
+					},
+				},
 			});
 		});
 		const params = utils.params();

@@ -1,10 +1,10 @@
 {
 	"all-groups": "All groups",
-	"groups": "Groups",
+	"groups": "Course",
 	"members": "Members",
 	"view-group": "View Group",
 	"owner": "Group Owner",
-	"new-group": "Create New Group",
+	"new-group": "Create New Course",
 	"no-groups-found": "There are no groups to see",
 
 	"pending.accept": "Accept",
@@ -66,7 +66,18 @@
 	"membership.leave.notification-title": "<strong>%1</strong> has left group <strong>%2</strong>",
 	"membership.reject": "Reject",
 
-	"new-group.group-name": "Group Name:",
+	"new-group.group-name": "Course Details:",
+
+	"new-group.course-code": "Course ID",
+	"new-group.course-name": "Course Name",
+	"new-group.course-trim": "Trimester",
+	"new-group.course-year": "Year",
+	"new-group.course-secc": "Section",
+	"new-group.course-trim.jm": "Jan-Mar",
+	"new-group.course-trim.aj": "Apr-July",
+	"new-group.course-trim.sd": "Sept-Dec",
+	"new-group.course-trim.smmr":"Summer",
+
 	"upload-group-cover": "Upload group cover",
 	"bulk-invite-instructions": "Enter a list of comma separated usernames to invite to this group",
 	"bulk-invite": "Bulk Invite",
