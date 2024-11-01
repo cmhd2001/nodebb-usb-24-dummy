@@ -155,36 +155,33 @@ privsUsers.hasMutePrivilege = async uid => await hasGlobalPrivilege('mute', uid)
 privsUsers.hasInvitePrivilege = async uid => await hasGlobalPrivilege('invite', uid);
 
 privsUsers.hasGroupPerms = async function (uid, groups) {
-
 	const [isAdmin, isGlobalMod, isTeacher] = await Promise.all([
 		user.isAdministrator(uid),
 		user.isGlobalModerator(uid),
 		user.isTeacher(uid),
 	]);
 
-	let list = true
+	let list = true;
 
 	if (!Array.isArray(groups)) {
-		list = false
-		groups = [groups]
+		list = false;
+		groups = [groups];
 	} else {
-		groups = groups.map(group => group.name)
+		groups = groups.map(group => group.name);
 	}
 
-	const groupsFiltered = groups.map(groupName =>  
-		isAdmin || 
+	const groupsFiltered = groups.map(groupName => isAdmin ||
 		(
-			!(groupName == "administrators") && (
+			!(groupName === 'administrators') && (
 				isGlobalMod || (
-					!(groupName == "Global Moderators") && 
-					(isTeacher || !(groupName == "Teachers")) 
+					!(groupName === 'Global Moderators') &&
+					(isTeacher || !(groupName === 'Teachers'))
 				)
 			)
-		)
-	)
+		));
 
-	return (list) ? groupsFiltered : groupsFiltered[0]
-}
+	return (list) ? groupsFiltered : groupsFiltered[0];
+};
 
 async function hasGlobalPrivilege(privilege, uid) {
 	const privsGlobal = require('./global');
