@@ -11,12 +11,27 @@ define('forum/groups/list', [
 		// Group creation
 		$('button[data-action="new"]').on('click', function () {
 			// Modificamos el prompt de Bootbox para incluir los nuevos campos
+			const currentYear = new Date().getFullYear();
+            const yearOptions = Array.from({length: 10}, (_, i) => `<option value="${currentYear + i}">${currentYear + i}</option>`).join('');
+			
 			bootbox.dialog({
 				title: '[[groups:new-group.group-name]]',
-                message: '<p><input id="newGroupCode" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text" placeholder=[[groups:new-group.course-code]]></p>' +
-                         '<p><input id="newGroupName" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text" placeholder=[[groups:new-group.course-name]]></p>' +
-						 '<p><input id="newGroupTrim" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text" placeholder=[[groups:new-group.course-trim]]></p>' + 
-						 '<p><input id="newGroupYear" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text" placeholder=[[groups:new-group.course-year]]></p>',
+                message: '<p>[[groups:new-group.course-code]]:</p>'+
+						 '<p><input id="newGroupCode" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text" placeholder=[[groups:new-group.course-code]]></p>' +
+                         '<p>[[groups:new-group.course-name]]:</p>'+
+						 '<p><input id="newGroupName" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text" placeholder=[[groups:new-group.course-name]]></p>' +
+						 '<p>[[groups:new-group.course-trim]]:</p>'+
+						 '<select id="newGroupTrim" class="form-control">' +
+						 	'<option value=""> —— </option>' +
+							'<option value="Ene-Mar">Ene-Mar</option>' +
+							'<option value="Abr-Jul">Abr-Jul</option>' +
+							'<option value="Sep-Dic">Sep-Dic</option>' +
+							'<option value="Verano">Verano</option>' +
+						 '</select></br>' +
+						 '<p>[[groups:new-group.course-year]]:</p>'+
+						 '<select class="form-control" id="newGroupYear">'+
+                         	`${yearOptions}` +
+                         '</select>',
                 buttons: {
                     cancel: {
                         label: 'Cancel',
@@ -41,6 +56,7 @@ define('forum/groups/list', [
                     }
                 }
             });
+			createYearPicker($('.bootbox'));
 		});
 		const params = utils.params();
 		$('#search-sort').val(params.sort || 'alpha');
