@@ -9,22 +9,21 @@ const user = require('../user');
 const helpers = require('./helpers');
 const pagination = require('../pagination');
 const privileges = require('../privileges');
-const { hasGroupPerms } = require('../privileges/users');
 
 const groupsController = module.exports;
 
 groupsController.list = async function (req, res) {
 	const sort = req.query.sort || 'alpha';
 
-	const [groupData, allowGroupCreation, isAdmin, isGlobalMod, isTeacher] = await Promise.all([
+	const [groupData, allowGroupCreation] = await Promise.all([
 		groups.getGroupsBySort(sort, 0, 14),
 		privileges.global.can('group:create', req.uid),
 	]);
 
-	const groupsFiltered = await privileges.users.hasGroupPerms(req.uid, groupData)
+	const groupsFiltered = await privileges.users.hasGroupPerms(req.uid, groupData);
 
 	res.render('groups/list', {
-		groups: groupData.filter((_, i)=> groupsFiltered[i]),
+		groups: groupData.filter((_, i) => groupsFiltered[i]),
 		allowGroupCreation: allowGroupCreation,
 		sort: validator.escape(String(sort)),
 		nextStart: 15,
@@ -64,7 +63,7 @@ groupsController.details = async function (req, res, next) {
 			return next();
 		}
 	}
-	const hasGroupPerms = await privileges.users.hasGroupPerms(req.uid, groupName)
+	const hasGroupPerms = await privileges.users.hasGroupPerms(req.uid, groupName);
 	if (!hasGroupPerms) {
 		return next();
 	}
