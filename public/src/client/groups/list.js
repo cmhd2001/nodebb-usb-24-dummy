@@ -10,15 +10,37 @@ define('forum/groups/list', [
 
 		// Group creation
 		$('button[data-action="new"]').on('click', function () {
-			bootbox.prompt('[[groups:new-group.group-name]]', function (name) {
-				if (name && name.length) {
-					api.post('/groups', {
-						name: name,
-					}).then((res) => {
-						ajaxify.go('groups/' + res.slug);
-					}).catch(alerts.error);
-				}
-			});
+			// Modificamos el prompt de Bootbox para incluir los nuevos campos
+			bootbox.dialog({
+				title: '[[groups:new-group.group-name]]',
+                message: '<p><input id="newGroupCode" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text" placeholder=[[groups:new-group.course-code]]></p>' +
+                         '<p><input id="newGroupName" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text" placeholder=[[groups:new-group.course-name]]></p>' +
+						 '<p><input id="newGroupTrim" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text" placeholder=[[groups:new-group.course-trim]]></p>' + 
+						 '<p><input id="newGroupYear" class="bootbox-input bootbox-input-text form-control" autocomplete="off" type="text" placeholder=[[groups:new-group.course-year]]></p>',
+                buttons: {
+                    cancel: {
+                        label: 'Cancel',
+                        className: 'btn-default',
+                    },
+                    ok: {
+                        label: 'OK',
+                        className: 'btn-primary',
+                        callback: function () {
+							var code = $('#newGroupCode').val();
+                            var name = $('#newGroupName').val();
+							var trimestre = $('#newGroupTrim').val();
+							var year = $('#newGroupYear').val();
+                            if (name && name.length) {
+                                api.post('/groups', {
+                                    name: code + " | " + name + " | " + trimestre + " | " + year,
+                                }).then((res) => {
+                                    ajaxify.go('groups/' + res.slug);
+                                }).catch(alerts.error);
+                            }
+                        }
+                    }
+                }
+            });
 		});
 		const params = utils.params();
 		$('#search-sort').val(params.sort || 'alpha');
