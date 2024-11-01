@@ -72,6 +72,11 @@
 	"new-group.course-name": "Course Name",
 	"new-group.course-trim": "Trimester",
 	"new-group.course-year": "Year",
+	"new-group.course-secc": "Section",
+	"new-group.course-trim.jm": "Jan-Mar",
+	"new-group.course-trim.aj": "Apr-June",
+	"new-group.course-trim.sd": "Sept-Dec",
+	"new-group.course-trim.smmr":"Summer",
 
 	"upload-group-cover": "Upload group cover",
 	"bulk-invite-instructions": "Enter a list of comma separated usernames to invite to this group",
