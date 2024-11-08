@@ -40,12 +40,12 @@ groupsAPI.create = async function (caller, data) {
 	const groupData = await groups.create(data);
 
 	// Creación de categoria respectiva al grupo
-	let dataCategory = {
+	const dataCategory = {
 		name: groupData.name,
 		parentCid: null,
 		order: null,
-		description: "Join our dynamic Q&A forum for \'" + groupData.name.split(" | ")[1] + "\' where university professors and students collaborate, explore, and share knowledge. Dive into meaningful discussions, solve complex challenges, and enrich your learning experience together!",
-		descriptionParsed: "Join our dynamic Q&A forum for \'" + groupData.name.split(" | ")[1] + "\' where university professors and students collaborate, explore, and share knowledge. Dive into meaningful discussions, solve complex challenges, and enrich your learning experience together!",
+		description: `Join our dynamic Q&A forum for '${groupData.name.split(' | ')[1]}' where university professors and students collaborate, explore, and share knowledge. Dive into meaningful discussions, solve complex challenges, and enrich your learning experience together!`,
+		descriptionParsed: `Join our dynamic Q&A forum for '${groupData.name.split(' | ')[1]}' where university professors and students collaborate, explore, and share knowledge. Dive into meaningful discussions, solve complex challenges, and enrich your learning experience together!`,
 		icon: null,
 		bgColor: null,
 		color: null,
@@ -55,7 +55,7 @@ groupsAPI.create = async function (caller, data) {
 		backgroundImage: null,
 		cloneFromCid: null,
 		cloneChildren: null,
-	}
+	};
 	await categories.create(dataCategory);
 
 	logGroupEvent(caller, 'group-create', {
