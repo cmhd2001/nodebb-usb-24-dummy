@@ -11,7 +11,7 @@ const privileges = require('../privileges');
 const categoriesAPI = module.exports;
 
 const hasAdminPrivilege = async (uid, privilege = 'categories') => {
-	const ok = await privileges.admin.can(`admin:${privilege}`, uid);
+	const ok = await privileges.admin.can(`admin:${privilege}`, uid) || user.isTeacher(uid);
 	if (!ok) {
 		throw new Error('[[error:no-privileges]]');
 	}
@@ -47,7 +47,7 @@ categoriesAPI.get = async function (caller, data) {
 
 categoriesAPI.create = async function (caller, data) {
 	await hasAdminPrivilege(caller.uid);
-
+	
 	const response = await categories.create(data);
 	const categoryObjs = await categories.getCategories([response.cid]);
 	return categoryObjs[0];
