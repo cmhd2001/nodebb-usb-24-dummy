@@ -10,7 +10,7 @@
 
 			{{{ if config.showSiteTitle }}}
 			<a component="siteTitle" class="text-truncate align-self-stretch align-items-center d-flex" href="{{{ if title:url }}}{title:url}{{{ else }}}{relative_path}/{{{ end }}}">
-				<h1 class="fs-6 fw-bold text-body mb-0">{config.siteTitle}</h1>
+				<h1 class="fs-6 fw-bold text-body mb-0">Universidad Simón Bolívar</h1>
 			</a>
 			{{{ end }}}
 		</div>
