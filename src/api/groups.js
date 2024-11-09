@@ -88,7 +88,25 @@ groupsAPI.delete = async function (caller, data) {
 		throw new Error('[[error:not-allowed]]');
 	}
 
+	// Funcion para buscar el CID de la categoria segun el nombre del grupo.
+	function getCategoryCIDByName(categories, targetName) {
+		for (let i = 0; i < categories.length; i++) {
+			if (categories[i].name === targetName) {
+				return categories[i].cid;
+			}
+		}
+		return null; // Retorna null si no se encuentra la categoría
+	}
+
+	const allCategories = await categories.getAllCategories();
+	const targetName = groupName;
+	const cid = getCategoryCIDByName(allCategories, targetName);
+
 	await groups.destroy(groupName);
+
+	// Eliminacion de la categoría asociada al grupo.
+	await categories.purge(cid, caller.uid);
+
 	logGroupEvent(caller, 'group-delete', {
 		groupName: groupName,
 	});
