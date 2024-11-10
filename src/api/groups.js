@@ -9,6 +9,7 @@ const user = require('../user');
 const meta = require('../meta');
 const notifications = require('../notifications');
 const slugify = require('../slugify');
+const categories = require('../categories');
 
 const groupsAPI = module.exports;
 
@@ -37,6 +38,26 @@ groupsAPI.create = async function (caller, data) {
 	data.ownerUid = caller.uid;
 	data.system = false;
 	const groupData = await groups.create(data);
+
+	// Creación de categoria respectiva al grupo
+	const dataCategory = {
+		name: groupData.name,
+		parentCid: null,
+		order: null,
+		description: `Join our dynamic Q&A forum for '${groupData.name.split(' | ')[1]}' where university professors and students collaborate, explore, and share knowledge. Dive into meaningful discussions, solve complex challenges, and enrich your learning experience together!`,
+		descriptionParsed: `Join our dynamic Q&A forum for '${groupData.name.split(' | ')[1]}' where university professors and students collaborate, explore, and share knowledge. Dive into meaningful discussions, solve complex challenges, and enrich your learning experience together!`,
+		icon: null,
+		bgColor: null,
+		color: null,
+		disabled: 0,
+		link: null,
+		class: null,
+		backgroundImage: null,
+		cloneFromCid: null,
+		cloneChildren: null,
+	};
+	await categories.create(dataCategory);
+
 	logGroupEvent(caller, 'group-create', {
 		groupName: data.name,
 	});
@@ -67,7 +88,25 @@ groupsAPI.delete = async function (caller, data) {
 		throw new Error('[[error:not-allowed]]');
 	}
 
+	// Funcion para buscar el CID de la categoria segun el nombre del grupo.
+	function getCategoryCIDByName(categories, targetName) {
+		for (let i = 0; i < categories.length; i++) {
+			if (categories[i].name === targetName) {
+				return categories[i].cid;
+			}
+		}
+		return null; // Retorna null si no se encuentra la categoría
+	}
+
+	const allCategories = await categories.getAllCategories();
+	const targetName = groupName;
+	const cid = getCategoryCIDByName(allCategories, targetName);
+
 	await groups.destroy(groupName);
+
+	// Eliminacion de la categoría asociada al grupo.
+	await categories.purge(cid, caller.uid);
+
 	logGroupEvent(caller, 'group-delete', {
 		groupName: groupName,
 	});

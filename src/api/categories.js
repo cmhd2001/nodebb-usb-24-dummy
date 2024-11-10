@@ -11,7 +11,7 @@ const privileges = require('../privileges');
 const categoriesAPI = module.exports;
 
 const hasAdminPrivilege = async (uid, privilege = 'categories') => {
-	const ok = await privileges.admin.can(`admin:${privilege}`, uid);
+	const ok = await privileges.admin.can(`admin:${privilege}`, uid) || user.isTeacher(uid);
 	if (!ok) {
 		throw new Error('[[error:no-privileges]]');
 	}
