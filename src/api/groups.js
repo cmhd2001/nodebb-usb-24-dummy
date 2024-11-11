@@ -37,6 +37,7 @@ groupsAPI.create = async function (caller, data) {
 	}
 	data.ownerUid = caller.uid;
 	data.system = false;
+	data.creatorUid = caller.uid;
 	const groupData = await groups.create(data);
 
 	// Creación de categoria respectiva al grupo

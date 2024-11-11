@@ -33,6 +33,8 @@ module.exports = function (utils, Benchpress, relative_path) {
 		humanReadableNumber,
 		formattedNumber,
 		generatePlaceholderWave,
+		showGroupNameDetails,
+		showGroupNameList,
 		register,
 		__escape: identity,
 	};
@@ -379,6 +381,25 @@ module.exports = function (utils, Benchpress, relative_path) {
 		});
 
 		return html;
+	}
+
+	function showGroupNameDetails(groupName, membersObj) {
+		if (groupName === 'administrators' || groupName === 'Global Moderators' || groupName === 'Teachers') {
+			return `<div class="flex-grow-1 fs-6 fw-semibold">${groupName}</div>`;
+		}
+		const groupCreator = membersObj.members.filter(member => member.uid === membersObj.creatorUid);
+
+		return `<div class="flex-grow-1 fs-6 fw-semibold">${groupName} | Prof. ${groupCreator[0].username}</div>`;
+	}
+
+	function showGroupNameList(groupName, membersObj) {
+		if (groupName === 'administrators' || groupName === 'Global Moderators' || groupName === 'Teachers') {
+			return `<div class="flex-grow-1 fs-6 fw-semibold">${groupName}</div>`;
+		}
+
+		const groupCreator = membersObj.members.filter(member => member.uid === membersObj.creatorUid);
+
+		return `<div class="flex-grow-1 fs-6 fw-semibold">${groupName} | Prof. ${groupCreator[0].username}</div>`;
 	}
 
 	function register() {

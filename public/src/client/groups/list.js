@@ -24,10 +24,10 @@ define('forum/groups/list', [
 						'<p>[[groups:new-group.course-trim]]:</p>' +
 						'<select id="newGroupTrim" class="form-control">' +
 						'<option value=""> —— </option>' +
-						'<option value="[[groups:new-group.course-trim.jm]]">[[groups:new-group.course-trim.jm]]</option>' +
-						'<option value="[[groups:new-group.course-trim.aj]]">[[groups:new-group.course-trim.aj]]</option>' +
-						'<option value="[[groups:new-group.course-trim.sd]]">[[groups:new-group.course-trim.sd]]</option>' +
-						'<option value="[[groups:new-group.course-trim.smmr]]">[[groups:new-group.course-trim.smmr]]</option>' +
+						'<option value="[[groups:new-group.course-trim.jm-alias]]">[[groups:new-group.course-trim.jm]]</option>' +
+						'<option value="[[groups:new-group.course-trim.aj-alias]]">[[groups:new-group.course-trim.aj]]</option>' +
+						'<option value="[[groups:new-group.course-trim.sd-alias]]">[[groups:new-group.course-trim.sd]]</option>' +
+						'<option value="[[groups:new-group.course-trim.smmr-alias]]">[[groups:new-group.course-trim.smmr]]</option>' +
 						'</select></br>' +
 						'<p>[[groups:new-group.course-year]]:</p>' +
 						'<select class="form-control" id="newGroupYear">' +
@@ -51,9 +51,17 @@ define('forum/groups/list', [
 							var trimestre = $('#newGroupTrim').val();
 							var year = $('#newGroupYear').val();
 							var seccion = $('#newGroupSecc').val();
+
+							// validacion del codigo
+							if (code.includes('-') || code.length !== 6) { code = ''; }
+
+							// validacion del nombre
+							name = name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+							if (name.length > 46) { name = ''; }
+
 							if (name && name.length && code && code.length && trimestre && trimestre.length) {
 								api.post('/groups', {
-									name: `${code} | ${name} | ${trimestre} ${year} | Prof. ${app.user.username} | Sec. ${seccion}`,
+									name: `${code} | ${name} | ${trimestre} ${year} | Sec. ${seccion}`,
 								}).then((res) => {
 									ajaxify.go('groups/' + res.slug);
 								}).catch(alerts.error);

@@ -42,6 +42,7 @@ module.exports = function (Groups) {
 			private: isPrivate ? 1 : 0,
 			disableJoinRequests: disableJoinRequests,
 			disableLeave: disableLeave,
+			creatorUid: data.creatorUid,
 		};
 
 		await plugins.hooks.fire('filter:group.create', { group: groupData, data: data });
