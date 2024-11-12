@@ -70,6 +70,13 @@ categoriesAPI.delete = async function (caller, { cid }) {
 
 	const name = await categories.getCategoryField(cid, 'name');
 	await categories.purge(cid, caller.uid);
+
+	// Eliminación de grupo asociado a la categoría
+	const dataName = name.split(' | ');
+	if (dataName.length === 4) {
+		await groups.destroy(name);
+	}
+
 	await events.log({
 		type: 'category-purge',
 		uid: caller.uid,
