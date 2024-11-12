@@ -53,11 +53,53 @@ define('forum/groups/list', [
 							var seccion = $('#newGroupSecc').val();
 
 							// validacion del codigo
-							if (code.includes('-') || code.length !== 6) { code = ''; }
+							if (code.includes('-') || code.length !== 6 || !/^[A-Z]{2,3}[0-9]+$/.test(code)) {
+								bootbox.dialog({
+									title: '<h5 class="text-danger"><i class="fa fa-exclamation-circle fa-fw"></i>&nbsp; [[error:group-name-id-field]]</h5>',
+									message: '<ul>' +
+											'<li>[[error:group-name-id-field-long]]</li>' +
+											'<li>[[error:group-name-id-field-alphanum]]</li>' +
+											'<ul>' +
+											'<li>[[error:group-name-id-field-alphanum.lowercase]]</li>' +
+											'<li>[[error:group-name-id-field-alphanum.format]]</li>' +
+											'</ul>' +
+											'<li>[[error:group-name-id-field-dashes]]</li>' +
+											'</ul>' +
+											'<b class="text-muted">[[error:group-name-ex]] CI3715, PBG213,...</b>',
+									closeButton: false,
+									backdrop: true,
+									buttons: {
+										ok: {
+											label: 'OK',
+											className: 'btn-primary',
+										},
+									},
+								});
+								return;
+							}
 
 							// validacion del nombre
 							name = name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-							if (name.length > 46) { name = ''; }
+							if (name.length > 46 || !/^[A-Za-z\s]+$/.test(name)) {
+								bootbox.dialog({
+									title: '<h5 class="text-danger"><i class="fa fa-exclamation-circle fa-fw"></i>&nbsp; [[error:group-name-field]]</h5>',
+									message: '<ul>' +
+											'<li>[[error:group-name-field-long]]</li>' +
+											'<li>[[error:group-name-field-alpha]]</li>' +
+											'<li>[[error:group-name-field-especial]]</li>' +
+											'</ul>' +
+											'<b class="text-muted">[[error:group-name-field-name-ex]]</b>',
+									closeButton: false,
+									backdrop: true,
+									buttons: {
+										ok: {
+											label: 'OK',
+											className: 'btn-primary',
+										},
+									},
+								});
+								return;
+							}
 
 							if (name && name.length && code && code.length && trimestre && trimestre.length) {
 								api.post('/groups', {
