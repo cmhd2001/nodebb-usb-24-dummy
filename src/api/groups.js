@@ -11,6 +11,16 @@ const notifications = require('../notifications');
 const slugify = require('../slugify');
 const categories = require('../categories');
 
+// Funcion para buscar el CID de la categoria segun el nombre del grupo.
+function getCategoryCIDByName(categories, targetName) {
+	for (let i = 0; i < categories.length; i++) {
+		if (categories[i].name === targetName) {
+			return categories[i].cid;
+		}
+	}
+	return null; // Retorna null si no se encuentra la categoría
+}
+
 const groupsAPI = module.exports;
 
 groupsAPI.list = async (caller, data) => {
@@ -120,24 +130,15 @@ groupsAPI.delete = async function (caller, data) {
 		throw new Error('[[error:not-allowed]]');
 	}
 
-	// Funcion para buscar el CID de la categoria segun el nombre del grupo.
-	function getCategoryCIDByName(categories, targetName) {
-		for (let i = 0; i < categories.length; i++) {
-			if (categories[i].name === targetName) {
-				return categories[i].cid;
-			}
-		}
-		return null; // Retorna null si no se encuentra la categoría
-	}
-
 	const allCategories = await categories.getAllCategories();
 	const targetName = groupName;
 	const cid = getCategoryCIDByName(allCategories, targetName);
+	if (cid) {
+		// Eliminacion de la categoría asociada al grupo.
+		await categories.purge(cid, caller.uid);
+	}
 
 	await groups.destroy(groupName);
-
-	// Eliminacion de la categoría asociada al grupo.
-	await categories.purge(cid, caller.uid);
 
 	logGroupEvent(caller, 'group-delete', {
 		groupName: groupName,
@@ -308,6 +309,18 @@ groupsAPI.leave = async function (caller, data) {
 	});
 	const uids = await groups.getOwners(groupName);
 	await notifications.push(notification, uids);
+
+	// Eliminar grupo en caso de quedar sin propietarios
+	if (isCallerOwner && uids.length === 0) {
+		const allCategories = await categories.getAllCategories();
+		const targetName = groupName;
+		const cid = getCategoryCIDByName(allCategories, targetName);
+
+		if (cid) {
+			await groups.destroy(groupName); // Eliminacion del grupo.
+			await categories.purge(cid, caller.uid); // Eliminacion de la categoría asociada al grupo.
+		}
+	}
 
 	logGroupEvent(caller, `group-${isSelf ? 'leave' : 'kick'}`, {
 		groupName: groupName,
