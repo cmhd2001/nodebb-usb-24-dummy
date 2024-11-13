@@ -11,7 +11,7 @@ module.exports = function (Groups) {
 		const timestamp = data.timestamp || Date.now();
 		let disableJoinRequests = parseInt(data.disableJoinRequests, 10) === 1 ? 1 : 0;
 		// Inclusion de creacion para profesores.
-		if (data.name === 'administrators' || data.name === 'teachers') {
+		if (data.name === 'administrators' || data.name === 'Teachers') {
 			disableJoinRequests = 1;
 		}
 		const disableLeave = parseInt(data.disableLeave, 10) === 1 ? 1 : 0;
