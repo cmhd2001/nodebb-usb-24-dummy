@@ -389,7 +389,7 @@ module.exports = function (utils, Benchpress, relative_path) {
 		}
 		const groupCreator = membersObj.members.filter(member => member.uid === membersObj.creatorUid);
 
-		return `<div class="flex-grow-1 fs-6 fw-semibold">${groupName} | Prof. ${groupCreator[0].username}</div>`;
+		return `<div class="flex-grow-1 fs-6 fw-semibold">${groupName} | Prof. ${groupCreator[0].fullname}</div>`;
 	}
 
 	function showGroupNameList(groupName, membersObj) {
@@ -399,7 +399,7 @@ module.exports = function (utils, Benchpress, relative_path) {
 
 		const groupCreator = membersObj.members.filter(member => member.uid === membersObj.creatorUid);
 
-		return `<div class="flex-grow-1 fs-6 fw-semibold">${groupName} | Prof. ${groupCreator[0].username}</div>`;
+		return `<div class="flex-grow-1 fs-6 fw-semibold">${groupName} | Prof. ${groupCreator[0].fullname}</div>`;
 	}
 
 	function register() {

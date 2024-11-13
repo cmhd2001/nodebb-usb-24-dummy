@@ -72,11 +72,12 @@ groupsAPI.create = async function (caller, data) {
 		const section = courseData[3].split(' ')[1]; // Sección asociada al curso.
 
 		const [fullDataGroup] = await Promise.all([groups.get(groupData.name, {})]);
-		const teacher = fullDataGroup.members[0].username; // Profesor respectivo del curso.
+		console.log(fullDataGroup);
+		const teacher = await user.getUserFields(fullDataGroup.creatorUid, ['fullname']); // Profesor respectivo del curso.
 
 		const descriptionCurse = `💬 ¡Bienvenidos al fascinante ambiente de preguntas y respuestas en "${courseName}" (${courseCode})! 
 		Este espacio se lleva a cabo en el trimestre ${trimester} del año ${year}, en la sección ${section}. 
-		Bajo la moderación experta de el/la Prof. ${teacher} 👨‍🏫👩‍🏫.`;
+		Bajo la moderación experta de el/la Prof. ${teacher.fullname} 👨‍🏫👩‍🏫.`;
 
 		// Inicialización de la categoría
 		const dataCategory = {
