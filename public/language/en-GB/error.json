@@ -51,6 +51,9 @@
 	"sendmail-not-found": "The sendmail executable could not be found, please ensure it is installed and executable by the user running NodeBB.",
 	"digest-not-enabled": "This user does not have digests enabled, or the system default is not configured to send digests",
 
+	"fullname-too-long": "Fullname too long",
+	"fullname-too-short": "Fullname too short",
+	"fullname-with-invalid-characters": "Fullname contains invalid characters",
 	"username-too-short": "Username too short",
 	"username-too-long": "Username too long",
 	"password-too-long": "Password too long",

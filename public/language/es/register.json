@@ -7,6 +7,8 @@
     "help.minimum-password-length": "Tu contraseña debe tener al menos %1 carácteres.",
     "email-address": "Correo electrónico",
     "email-address-placeholder": "Escribe tu correo electrónico",
+    "fullname": "Nombre completo",
+    "fullname-placeholder": "Introduce tu nombre completo",
     "username": "Nombre de usuario",
     "username-placeholder": "Introduce tu nombre de usuario",
     "password": "Contraseña",

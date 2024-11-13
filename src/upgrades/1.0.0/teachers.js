@@ -11,7 +11,7 @@ module.exports = {
 		}
 		await groups.create({
 			name: 'Teachers',
-			userTitle: 'Teachers',
+			userTitle: 'Teacher',
 			description: 'List of Professors',
 			hidden: 0,
 			private: 1,

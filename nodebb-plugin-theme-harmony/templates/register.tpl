@@ -11,6 +11,15 @@
 			<div class="col-12 col-md-5 col-lg-3 px-md-0">
 				<div class="register-block">
 					<form component="register/local" class="d-flex flex-column gap-3" role="form" action="{config.relative_path}/register" method="post">
+						
+						<div class="mb-2 d-flex flex-column gap-2">
+							<label for="fullname">[[register:fullname]]</label>
+							<div class="d-flex flex-column">
+								<input class="form-control" type="text" placeholder="[[register:fullname-placeholder]]" name="fullname" id="fullname" autocorrect="off" autocapitalize="off" aria-required="true" aria-describedby="fullname-notify"/>
+								<span class="register-feedback text-xs text-danger" id="fullname-notify" aria-live="polite"></span>
+							</div>
+						</div>
+						
 						<div class="mb-2 d-flex flex-column gap-2">
 							<label for="username">[[register:username]]</label>
 							<div class="d-flex flex-column">
