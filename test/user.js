@@ -8,6 +8,7 @@ const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const { setTimeout } = require('node:timers/promises');
 
+const { group } = require('console');
 const db = require('./mocks/databasemock');
 const User = require('../src/user');
 const Topics = require('../src/topics');
