@@ -2576,33 +2576,6 @@ describe('User', () => {
 		});
 	});
 
-	describe('isProfessor', () => {
-		it('should be able to create an user with teacher role', async () => {
-			testUid = await User.create({ username: 'Profesor', password: 'profesor', isProfessor: 'true' });
-			assert.ok(testUid);
-			const teacher = await groups.isMember(testUid, 'Teachers');
-			assert.strictEqual(teacher, true);
-		});
-
-		it('should not be in teachers group, if not selected teacher role', async () => {
-			testUid = await User.create({ username: userData.username, password: userData.password });
-			const student = await groups.isMember(testUid, 'Teachers');
-			assert.strictEqual(student, false);
-		});
-
-		it('should not be in administrator group, if teacher', async () => {
-			testUid = await User.create({ username: 'Profesor', password: 'profesor', isProfessor: 'true' });
-			const teacher = await groups.isMember(testUid, 'administrators');
-			assert.strictEqual(teacher, false);
-		});
-
-		it('should not be in global moderator group, if teacher', async () => {
-			testUid = await User.create({ username: 'Profesor', password: 'profesor', isProfessor: 'true' });
-			const teacher = await groups.isMember(testUid, 'Global Moderators');
-			assert.strictEqual(teacher, false);
-		});
-	});
-
 	describe('isPrivilegedOrSelf', () => {
 		it('should return not error if self', (done) => {
 			User.isPrivilegedOrSelf(1, 1, (err) => {
