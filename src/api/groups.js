@@ -72,7 +72,6 @@ groupsAPI.create = async function (caller, data) {
 		const section = courseData[3].split(' ')[1]; // Sección asociada al curso.
 
 		const [fullDataGroup] = await Promise.all([groups.get(groupData.name, {})]);
-		console.log(fullDataGroup);
 		const teacher = await user.getUserFields(fullDataGroup.creatorUid, ['fullname']); // Profesor respectivo del curso.
 
 		const descriptionCurse = `💬 ¡Bienvenidos al fascinante ambiente de preguntas y respuestas en "${courseName}" (${courseCode})! 
@@ -98,7 +97,6 @@ groupsAPI.create = async function (caller, data) {
 		};
 		await categories.create(dataCategory); // Creación de la categoría.
 	}
-
 
 	logGroupEvent(caller, 'group-create', {
 		groupName: data.name,
