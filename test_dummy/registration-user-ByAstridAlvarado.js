@@ -56,7 +56,6 @@ describe('User  Registration', () => {
 			};
 
 			const register = require('../public/src/client/register');
-			/* eslint-disable-next-line no-unused-expressions */
 			register.init;
 
 			fullnameInput = $('#fullname');

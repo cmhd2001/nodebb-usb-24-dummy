@@ -37,7 +37,6 @@ describe('Group Creation Modal', () => {
 		const list = require('../public/src/client/groups/list');
 		const bootbox = require('bootbox');
 
-		/* eslint-disable-next-line no-unused-expressions */
 		list.init;
 	});
 
